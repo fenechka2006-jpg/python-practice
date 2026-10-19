@@ -1,0 +1,15 @@
+def dictionary(dict_num):
+    sets_dict = {}
+    for key, value in dict_num.items():
+        sets_dict[key] = set(value)
+    res = []
+    keys = list(sets_dict.keys())
+    for i in range (len(keys)):
+        for j in range (i + 1, len(keys)):
+            k1 = keys[i]
+            k2 = keys[j]
+            if sets_dict[k1] & sets_dict[k2] != 0:
+                res.append((k1, k2))
+    return res
+d = {1: [5, 6], 2: [7, 8], 3: [6, 8]}
+print(dictionary(d))
