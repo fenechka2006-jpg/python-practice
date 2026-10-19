@@ -1,0 +1,28 @@
+import math
+def modul(a, b):
+    return math.sqrt(a ** 2 + b ** 2)
+
+def argument(a, b):
+    return math.atan2(b, a)
+
+
+def root(a, b, n):
+    r0 = modul(a, b)
+    arg0 = argument(a, b)
+
+    r = r0 ** (1 / n)
+
+    res = []
+    for k in range(n):
+        arg = (arg0 + 2 * math.pi * k) / n
+        Re = r * math.cos(arg)
+        Im = r * math.sin(arg)
+        res.append((Re, Im))
+    return res
+
+a, b, n = 2, 3, 4
+roots = root(a, b, n)
+print(roots)
+for i, (Re, Im) in enumerate(roots):
+    sign = '+' if Im >= 0 else '-'
+    print(f"z_{i} = {Re:.4f} {sign} {abs(Im):.4f}i")
