@@ -1,0 +1,61 @@
+import math
+class MapObject:
+    def __init__(self, x, y):
+        self._x = x
+        self._y = y
+
+    def get_x(self):
+        return self._x
+
+    def get_y(self):
+        return self._y
+
+    def is_obstacle(self):
+        return False
+
+class Tower(MapObject):
+
+    def __init__(self, x, y, attack_range, damage):
+        super().__init__(x, y)
+        if attack_range <= 0:
+            raise ValueError("Радиус атаки должен быть положительным!")
+        if damage <= 0:
+            raise ValueError("Урон должен быть положительным!")
+
+        self._attack_range = attack_range
+        self._damage = damage
+
+    def get_range(self):
+        return self._attack_range
+
+    def get_damage(self):
+        return self._damage
+
+    def is_obstacle(self):
+        return True
+
+    def is_in_range(self, target):
+        dx = self.get_x() - target.get_x()
+        dy = self.get_y() - target.get_y()
+        distance = math.sqrt(dx ** 2 + dy ** 2)
+        return distance <= self._attack_range
+
+
+if __name__ == "__main__":
+    my_tower = Tower(x=2, y=3, attack_range=5.5, damage=10)
+    print(f"Башня создана: x={my_tower.get_x()}, y={my_tower.get_y()}")
+
+    obj = MapObject(0, 0)
+    print(f"Обычный объект - препятствие? {obj.is_obstacle()}")  # False
+    print(f"Башня - препятствие? {my_tower.is_obstacle()}")  # True
+
+    target_near = MapObject(4, 5)  # Близко
+    target_far = MapObject(10, 10)  # Далеко
+
+    print(f"Цель (4, 5) в радиусе? {my_tower.is_in_range(target_near)}")  # True
+    print(f"Цель (10, 10) в радиусе? {my_tower.is_in_range(target_far)}")  # False
+
+    try:
+        bad_tower = Tower(x=0, y=0, attack_range=5, damage=-10)
+    except ValueError as e:
+        print(f"Ошибка: {e}")
